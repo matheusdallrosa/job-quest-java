@@ -1,9 +1,7 @@
+import Home from "./pages/Home";
+
 function App() {
-  return (
-    <div>
-      <h1 className="text-2xl text-green-400 font-bold">Radhe Radhe</h1>
-    </div>
-  );
+  return <Home />;
 }
 
 export default App;
