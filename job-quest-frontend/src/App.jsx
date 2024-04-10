@@ -1,7 +1,21 @@
-import Home from "./pages/Home";
+import { useEffect } from "react";
+import { Outlet, useLocation } from "react-router-dom";
+import Footer from "./components/Footer";
 
 function App() {
-  return <Home />;
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return (
+    <div className="min-h-screen flex flex-col justify-between bg-slate-950">
+      <Outlet />
+
+      <Footer />
+    </div>
+  );
 }
 
 export default App;
