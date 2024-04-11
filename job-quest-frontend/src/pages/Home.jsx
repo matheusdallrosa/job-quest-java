@@ -5,6 +5,7 @@ import ApplicationsSection from "../components/ApplicationsSection";
 
 const Home = () => {
   const isLoggedIn = true;
+  const isRecruiter = true;
 
   if (!isLoggedIn) {
     return (
@@ -15,6 +16,16 @@ const Home = () => {
     );
   }
 
+  if (isRecruiter) {
+    return (
+      <div className="pt-40 px-32">
+        <ProfileSection />
+        <ApplicationsSection />
+      </div>
+    );
+  }
+
+  // FOR CANDIDATES
   return (
     <div className="pt-40 px-32">
       <ProfileSection />
