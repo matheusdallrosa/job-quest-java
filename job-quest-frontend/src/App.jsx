@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
+import Header from "./components/Header";
 import Footer from "./components/Footer";
 
 function App() {
@@ -11,8 +12,8 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-slate-950">
+      <Header />
       <Outlet />
-
       <Footer />
     </div>
   );
