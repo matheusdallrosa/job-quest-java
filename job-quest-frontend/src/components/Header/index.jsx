@@ -19,7 +19,7 @@ const Header = () => {
           <li>
             <button
               onClick={() => navigate("/")}
-              className="inline-block px-4 py-2 duration-200 hover:bg-slate-900 hover:text-orange-400 rounded-2xl"
+              className="inline-block px-4 py-2 duration-200 hover:bg-slate-900 hover:text-purple-400 rounded-2xl"
             >
               Home
             </button>
@@ -27,7 +27,7 @@ const Header = () => {
           <li>
             <button
               onClick={() => navigate("/jobs")}
-              className="inline-block px-4 py-2 duration-200 hover:bg-slate-900 hover:text-orange-400 rounded-2xl"
+              className="inline-block px-4 py-2 duration-200 hover:bg-slate-900 hover:text-purple-400 rounded-2xl"
             >
               Job Listings
             </button>
@@ -36,12 +36,12 @@ const Header = () => {
 
         {isLoggedIn ? (
           <div className="flex justify-around items-center gap-x-6 2xl:gap-x-8">
-            <button className="py-4 px-6 bg-orange-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold shadow-inner shadow-black/80 transition-opacity">
+            <button className="py-3 px-8 bg-orange-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity">
               Logout
             </button>
           </div>
         ) : (
-          <button className="py-4 px-6 bg-green-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold shadow-inner shadow-black/80 transition-opacity">
+          <button className="py-3 px-8 bg-green-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity">
             Register
           </button>
         )}

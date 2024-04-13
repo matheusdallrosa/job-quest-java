@@ -1,22 +1,8 @@
-const JobsList = () => {
-  const jobs = [
-    {
-      id: 1,
-      position: "Data Scientist",
-      company: "Google",
-      location: "Bengaluru, IN",
-      skills: ["Python", "R", "Jupyter Notebook", "MATLAB"],
-      experience: "0 - 2 Years",
-    },
-    {
-      id: 2,
-      position: "Lead Backend Engineer",
-      company: "Spotify",
-      location: "Mumbai, IN",
-      skills: ["Java", "SpringBoot", "NGINX"],
-      experience: "3 - 5 Years",
-    },
-  ];
+const JobsList = ({ jobs, onApply, setSelectedJob }) => {
+  const handleApplyClick = (job) => {
+    setSelectedJob(job);
+    onApply();
+  };
 
   return (
     <div className="text-white">
@@ -50,7 +36,10 @@ const JobsList = () => {
             </div>
 
             <div>
-              <button className="py-4 px-8 bg-green-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity">
+              <button
+                onClick={() => handleApplyClick(job)}
+                className="py-4 px-8 bg-green-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity"
+              >
                 Apply
               </button>
             </div>
