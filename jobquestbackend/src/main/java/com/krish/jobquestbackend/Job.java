@@ -22,4 +22,13 @@ public class Job {
     private String experience;
     private String description;
     private List<String> skills;
+
+    public Job(String position, String company, String location, String experience, String description, List<String> skills) {
+        this.position = position;
+        this.company = company;
+        this.location = location;
+        this.experience = experience;
+        this.description = description;
+        this.skills = skills;
+    }
 }
