@@ -30,9 +30,9 @@ const skillOptions = [
   { value: "C/C++", label: "C/C++" },
 ];
 
-const JobApplication = ({ isOpen, onClose, job }) => {
+const JobApplication = ({ isOpen, onClose, job, applyForJob }) => {
   const [applicationForm, setApplicationForm] = useState({
-    position: "",
+    jobId: "",
     name: "",
     qualification: "",
     skills: [],
@@ -41,16 +41,21 @@ const JobApplication = ({ isOpen, onClose, job }) => {
     resumeLink: "",
   });
 
-  const handleSubmit = (e) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const updatedForm = {
       ...applicationForm,
-      position: job?.position,
+      jobId: job?.id,
       qualification: applicationForm.qualification?.value,
       skills: applicationForm.skills.map((item) => item.value),
     };
 
     console.log(updatedForm);
+    setIsLoading(true);
+
+    await applyForJob(updatedForm);
 
     setApplicationForm({
       position: "",
@@ -61,8 +66,6 @@ const JobApplication = ({ isOpen, onClose, job }) => {
       phone: "",
       resumeLink: "",
     });
-
-    onClose();
   };
 
   if (!isOpen) return null;
@@ -198,7 +201,10 @@ const JobApplication = ({ isOpen, onClose, job }) => {
 
           <button
             type="submit"
-            className="py-2 px-4 bg-green-500 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity"
+            disabled={isLoading}
+            className={`py-2 px-4 bg-green-500 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity ${
+              isLoading && "opacity-30 hover:opacity-40"
+            }`}
           >
             Apply
           </button>
