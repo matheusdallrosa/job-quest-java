@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/applications")
+@CrossOrigin(origins = "http://localhost:5173")
 public class JobApplicationController {
     @Autowired
     private JobApplicationService jobApplicationService;
