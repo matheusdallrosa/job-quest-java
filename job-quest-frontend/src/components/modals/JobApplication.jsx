@@ -77,7 +77,7 @@ const JobApplication = ({ isOpen, onClose, job }) => {
           </p>
         </div>
 
-        <div className="w-full mb-6 flex justify-between items-center">
+        <div className="w-full flex justify-between items-center">
           <div>
             <p className="font-semibold text-lg">{job?.company}</p>
             <p className="opacity-60">{job?.location}</p>
@@ -93,6 +93,10 @@ const JobApplication = ({ isOpen, onClose, job }) => {
               </span>
             ))}
           </div>
+        </div>
+
+        <div className="mt-8 mb-16">
+          <p>{job?.description}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">

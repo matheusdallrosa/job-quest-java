@@ -1,31 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+import api from "../api/axiosConfig";
 import JobsList from "../components/JobsList";
 import JobApplication from "../components/modals/JobApplication";
-
-const jobs = [
-  {
-    id: 1,
-    position: "Data Scientist",
-    company: "Google",
-    location: "Bengaluru, IN",
-    skills: ["Python", "R", "Jupyter Notebook", "MATLAB"],
-    experience: "0 - 2 Years",
-  },
-  {
-    id: 2,
-    position: "Lead Backend Engineer",
-    company: "Spotify",
-    location: "Mumbai, IN",
-    skills: ["Java", "SpringBoot", "NGINX"],
-    experience: "3 - 5 Years",
-  },
-];
 
 const JobListings = () => {
   const [isJobApplicationModalOpen, setIsJobApplicationModalOpen] =
     useState(false);
 
+  const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      const jobsResponse = await api.get("/api/v1/jobs");
+      setJobs(jobsResponse.data);
+    };
+
+    fetchJobs();
+  }, []);
 
   const openApplicationModal = () => {
     setIsJobApplicationModalOpen(true);
