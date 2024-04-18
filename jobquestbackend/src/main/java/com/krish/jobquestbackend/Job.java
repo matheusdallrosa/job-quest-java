@@ -1,5 +1,6 @@
 package com.krish.jobquestbackend;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,5 +31,10 @@ public class Job {
         this.experience = experience;
         this.description = description;
         this.skills = skills;
+    }
+
+    @JsonProperty("id")
+    public String getIdString() {
+        return id != null ? id.toHexString() : null;
     }
 }
