@@ -50,6 +50,7 @@ const JobApplication = ({ isOpen, onClose, job, applyForJob }) => {
       jobId: job?.id,
       qualification: applicationForm.qualification?.value,
       skills: applicationForm.skills.map((item) => item.value),
+      status: "Pending",
     };
 
     console.log(updatedForm);
