@@ -80,7 +80,7 @@ const Header = () => {
           </div>
         ) : (
           <button
-            onClick={() => navigate("/register")}
+            onClick={() => navigate("/register/candidate")}
             className="py-3 px-8 bg-green-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity"
           >
             Register
