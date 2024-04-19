@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import Creatable from "react-select/creatable";
 
 import { login as storeLogin } from "../../store/authSlice";
 import api from "../../api/axiosConfig";
+import { skillOptions } from "../../data/constants";
 
-const RecruiterRegisterForm = () => {
+const CandidateRegisterForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -18,8 +20,7 @@ const RecruiterRegisterForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [company, setCompany] = useState("");
-  const [location, setLocation] = useState("");
+  const [skills, setSkills] = useState([]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -31,16 +32,16 @@ const RecruiterRegisterForm = () => {
     e.preventDefault();
     setError("");
 
-    const jobIds = [];
-    const formData = { name, email, password, company, location, jobIds };
+    const skillsArray = skills.map((item) => item.value);
+    const formData = { name, email, password, skills: skillsArray };
 
     setIsLoading(true);
 
     try {
-      const response = await api.post("/api/v1/recruiters/signup", formData);
+      const response = await api.post("/api/v1/candidates/signup", formData);
 
       if (response.status === 201) {
-        dispatch(storeLogin({ isRecruiter: true, userData: response.data }));
+        dispatch(storeLogin({ isRecruiter: false, userData: response.data }));
 
         navigate("/");
         setIsLoading(false);
@@ -55,10 +56,10 @@ const RecruiterRegisterForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="p-14 mb-24 bg-slate-700 w-full max-w-md 2xl:max-w-xl rounded-lg flex flex-col gap-4 2xl:gap-10 mx-auto"
+      className="p-14 mb-24 bg-slate-800 w-full max-w-md 2xl:max-w-xl rounded-lg flex flex-col gap-4 2xl:gap-10 mx-auto"
     >
       <h1 className="text-3xl 2xl:text-5xl font-bold text-white text-center mb-8 2xl:mb-12">
-        Recruiter Signup
+        Candidate Signup
       </h1>
 
       <div>
@@ -110,24 +111,12 @@ const RecruiterRegisterForm = () => {
       </div>
 
       <div className="mt-6">
-        <input
-          type="text"
-          placeholder="Company"
-          value={company}
-          onChange={(e) => setCompany(e.target.value)}
-          className="w-full py-2 px-4 text-lg rounded-lg text-black/80 font-semibold"
-          required={true}
-        />
-      </div>
-
-      <div>
-        <input
-          type="text"
-          placeholder="Location"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          className="w-full py-2 px-4 text-lg rounded-lg text-black/80 font-semibold"
-          required={true}
+        <h3 className="text-lg text-white mb-1 font-medium">Skills</h3>
+        <Creatable
+          options={skillOptions}
+          isMulti
+          value={skills}
+          onChange={(selectedOptions) => setSkills(selectedOptions)}
         />
       </div>
 
@@ -159,7 +148,7 @@ const RecruiterRegisterForm = () => {
 
       <p className="text-secondary text-center">
         <Link
-          to="/login/recruiter"
+          to="/login/candidate"
           className="text-white/80 hover:text-purple-500 text-lg font-semibold"
         >
           Already Registered? Login here
@@ -169,4 +158,4 @@ const RecruiterRegisterForm = () => {
   );
 };
 
-export default RecruiterRegisterForm;
+export default CandidateRegisterForm;

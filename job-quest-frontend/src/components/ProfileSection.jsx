@@ -1,9 +1,6 @@
 import { useSelector } from "react-redux";
 
 const ProfileSection = () => {
-  // const skills = ["Next.js", "React", "Node.js", "Java"];
-  // const isRecruiter = true;
-
   const userData = useSelector((state) => state.auth.userData);
   const isRecruiter = useSelector((state) => state.auth.isRecruiter);
 
