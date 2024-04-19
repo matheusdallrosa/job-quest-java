@@ -1,5 +1,47 @@
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+
+import api from "../api/axiosConfig";
+
 const ApplicationsSection = () => {
-  const isRecruiter = true;
+  const isRecruiter = useSelector((state) => state.auth.isRecruiter);
+  const userEmail = useSelector((state) => state.auth.userData?.email);
+
+  const [applications, setApplications] = useState([]);
+
+  useEffect(() => {
+    const fetchApplications = async () => {
+      const applicationsResponse = await api.get("/api/v1/applications");
+      const jobsResponse = await api.get("/api/v1/jobs");
+
+      const applicationsData = applicationsResponse.data;
+      const jobsData = jobsResponse.data;
+
+      if (!isRecruiter) {
+        const candidateApplications = applicationsData.filter(
+          (item) => item.email === userEmail
+        );
+
+        const formattedApplications = candidateApplications.map(
+          (application) => {
+            const jobInfo = jobsData.find(
+              (job) => job.id === application.jobId
+            );
+            return {
+              ...application,
+              position: jobInfo?.position || null,
+              company: jobInfo?.company || null,
+              location: jobInfo?.location || null,
+            };
+          }
+        );
+
+        setApplications(formattedApplications);
+      }
+    };
+
+    fetchApplications();
+  }, [isRecruiter, userEmail]);
 
   const recruiterApplications = [
     {
@@ -26,22 +68,22 @@ const ApplicationsSection = () => {
     },
   ];
 
-  const applications = [
-    {
-      id: 1,
-      position: "SWE - II",
-      company: "Google",
-      location: "Bengaluru, IN",
-      status: "Pending",
-    },
-    {
-      id: 2,
-      position: "Tech Lead",
-      company: "Zomato",
-      location: "Pune, IN",
-      status: "Interview Scheduled",
-    },
-  ];
+  // const applications = [
+  //   {
+  //     id: 1,
+  //     position: "SWE - II",
+  //     company: "Google",
+  //     location: "Bengaluru, IN",
+  //     status: "Pending",
+  //   },
+  //   {
+  //     id: 2,
+  //     position: "Tech Lead",
+  //     company: "Zomato",
+  //     location: "Pune, IN",
+  //     status: "Interview Scheduled",
+  //   },
+  // ];
 
   if (isRecruiter) {
     return (
@@ -109,25 +151,31 @@ const ApplicationsSection = () => {
 
       <div className="p-4 my-4 border rounded-lg text-white">
         <div className="flex flex-col gap-2 divide-y divide-white/40">
-          {applications.map((item) => (
-            <div
-              key={item.id}
-              className="flex justify-between items-center py-3 px-4"
-            >
-              <div>
-                <p className="font-semibold">{item.position}</p>
-                <p>
-                  {item.company}
-                  <span className="ml-4 text-sm opacity-80">
-                    @ {item.location}
-                  </span>
-                </p>
+          {applications.length > 0 ? (
+            applications.map((item) => (
+              <div
+                key={item.id}
+                className="flex justify-between items-center py-3 px-4"
+              >
+                <div>
+                  <p className="font-semibold">{item.position}</p>
+                  <p>
+                    {item.company}
+                    <span className="ml-4 text-sm opacity-80">
+                      @ {item.location}
+                    </span>
+                  </p>
+                </div>
+                <div>
+                  <p>{item.status}</p>
+                </div>
               </div>
-              <div>
-                <p>{item.status}</p>
-              </div>
+            ))
+          ) : (
+            <div>
+              <p>You have not applied to any jobs!</p>
             </div>
-          ))}
+          )}
         </div>
       </div>
     </div>

@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "react-select";
 import Creatable from "react-select/creatable";
 
 import { skillOptions, qualificationOptions } from "../../data/constants";
+import { useSelector } from "react-redux";
 
 const JobApplication = ({ isOpen, onClose, job, applyForJob }) => {
+  const userData = useSelector((state) => state.auth.userData);
+
   const [applicationForm, setApplicationForm] = useState({
     jobId: "",
     name: "",
@@ -14,6 +17,15 @@ const JobApplication = ({ isOpen, onClose, job, applyForJob }) => {
     phone: "",
     resumeLink: "",
   });
+
+  useEffect(() => {
+    setApplicationForm({
+      ...applicationForm,
+      name: userData?.name,
+      email: userData?.email,
+      skills: userData?.skills?.map((item) => ({ value: item, label: item })),
+    });
+  }, [userData]);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -34,10 +46,10 @@ const JobApplication = ({ isOpen, onClose, job, applyForJob }) => {
 
     setApplicationForm({
       position: "",
-      name: "",
+      name: userData?.name,
       qualification: "",
-      skills: [],
-      email: "",
+      skills: userData?.skills?.map((item) => ({ value: item, label: item })),
+      email: userData?.email,
       phone: "",
       resumeLink: "",
     });
@@ -85,11 +97,8 @@ const JobApplication = ({ isOpen, onClose, job, applyForJob }) => {
             <input
               type="text"
               value={applicationForm.name}
-              onChange={(e) =>
-                setApplicationForm({ ...applicationForm, name: e.target.value })
-              }
-              placeholder="(e.g. Thomas Shelby)"
-              className="w-full py-1 px-4 rounded-lg text-black/80"
+              readOnly={true}
+              className="w-full py-1 px-4 rounded-lg text-black font-semibold bg-white/25"
               required={true}
             />
           </div>
@@ -99,14 +108,8 @@ const JobApplication = ({ isOpen, onClose, job, applyForJob }) => {
             <input
               type="email"
               value={applicationForm.email}
-              onChange={(e) =>
-                setApplicationForm({
-                  ...applicationForm,
-                  email: e.target.value,
-                })
-              }
-              placeholder="(e.g. tom@gmail.com)"
-              className="w-full py-1 px-4 rounded-lg text-black/80"
+              readOnly={true}
+              className="w-full py-1 px-4 rounded-lg text-black font-semibold bg-white/25"
               required={true}
             />
           </div>
