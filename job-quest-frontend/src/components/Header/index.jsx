@@ -1,12 +1,42 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import Logo from "../Logo";
+import api from "../../api/axiosConfig";
+import { logout as storeLogout } from "../../store/authSlice";
 
 const Header = () => {
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isRecruiter = useSelector((state) => state.auth.isRecruiter);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogout = async (e) => {
+    try {
+      e.preventDefault();
+      setIsLoading(true);
+
+      const apiEndpoint = isRecruiter
+        ? "/api/v1/recruiters/logout"
+        : "/api/v1/candidates/logout";
+
+      const response = await api.post(apiEndpoint);
+      setIsLoading(false);
+
+      if (response.status === 200) {
+        dispatch(storeLogout());
+        navigate("/");
+      }
+    } catch {
+      console.log("Logging out due to error");
+      dispatch(storeLogout());
+      navigate("/");
+    }
+  };
 
   return (
     <header className="w-full py-4 2xl:py-6 px-10 font-fira bg-white bg-opacity-10 backdrop-blur-lg fixed z-10">
@@ -38,12 +68,21 @@ const Header = () => {
 
         {isAuthenticated ? (
           <div className="flex justify-around items-center gap-x-6 2xl:gap-x-8">
-            <button className="py-3 px-8 bg-orange-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity">
+            <button
+              onClick={handleLogout}
+              disabled={isLoading}
+              className={`py-3 px-8 bg-orange-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity ${
+                isLoading && "opacity-30 hover:opacity-40"
+              }`}
+            >
               Logout
             </button>
           </div>
         ) : (
-          <button className="py-3 px-8 bg-green-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity">
+          <button
+            onClick={() => navigate("/register")}
+            className="py-3 px-8 bg-green-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity"
+          >
             Register
           </button>
         )}
