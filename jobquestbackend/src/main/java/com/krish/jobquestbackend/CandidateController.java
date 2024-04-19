@@ -19,11 +19,11 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/recruiters")
+@RequestMapping("/api/v1/candidates")
 @CrossOrigin(origins = "http://localhost:5173")
-public class RecruiterController {
+public class CandidateController {
     @Autowired
-    private RecruiterService recruiterService;
+    private CandidateService candidateService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -32,24 +32,24 @@ public class RecruiterController {
     private AuthenticationManager authenticationManager;
 
     @GetMapping
-    public ResponseEntity<List<Recruiter>> getAllRecruiters() {
-        return new ResponseEntity<List<Recruiter>>(recruiterService.allRecruiters(), HttpStatus.OK);
+    public ResponseEntity<List<Candidate>> getAllCandidates() {
+        return new ResponseEntity<List<Candidate>>(candidateService.allCandidates(), HttpStatus.OK);
     }
 
     //    TO BE REMOVED LATER, USING JUST FOR TESTING PURPOSES
     @GetMapping("/{email}")
-    public ResponseEntity<Optional<Recruiter>> getSingleRecruiter(@PathVariable String email) {
-        return new ResponseEntity<Optional<Recruiter>>(recruiterService.singleRecruiter(email), HttpStatus.OK);
+    public ResponseEntity<Optional<Candidate>> getSingleCandidate(@PathVariable String email) {
+        return new ResponseEntity<Optional<Candidate>>(candidateService.singleCandidate(email), HttpStatus.OK);
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody Recruiter recruiter) {
-        Optional<Recruiter> existingRecruiter = recruiterService.singleRecruiter(recruiter.getEmail());
-        if (existingRecruiter.isPresent()) {
+    public ResponseEntity<?> signup(@RequestBody Candidate candidate) {
+        Optional<Candidate> existingCandidate = candidateService.singleCandidate(candidate.getEmail());
+        if (existingCandidate.isPresent()) {
             return new ResponseEntity<String>("Email already taken", HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<Recruiter>(recruiterService.createRecruiter(recruiter), HttpStatus.CREATED);
+        return new ResponseEntity<Candidate>(candidateService.createCandidate(candidate), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
@@ -58,12 +58,12 @@ public class RecruiterController {
         String password = payload.get("password");
 
         try {
-            Optional<Recruiter> recruiter = recruiterService.singleRecruiter(email);
-            if (recruiter.isEmpty()) {
+            Optional<Candidate> candidate = candidateService.singleCandidate(email);
+            if (candidate.isEmpty()) {
                 return new ResponseEntity<Map<String, Object>>(Map.of("error", "Email not found"), HttpStatus.NOT_FOUND);
             }
 
-            String hashedPassword = recruiter.get().getPassword();
+            String hashedPassword = candidate.get().getPassword();
 
             if (!passwordEncoder.matches(password, hashedPassword)) {
                 return new ResponseEntity<Map<String, Object>>(Map.of("error", "Wrong password"), HttpStatus.UNAUTHORIZED);
@@ -76,7 +76,7 @@ public class RecruiterController {
 
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("token", session.getId());
-            responseBody.put("recruiter", recruiter);
+            responseBody.put("candidate", candidate);
 
             return new ResponseEntity<Map<String, Object>>(responseBody, HttpStatus.OK);
         } catch (AuthenticationException e) {
