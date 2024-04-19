@@ -34,6 +34,18 @@ public class Recruiter {
         this.jobIds = jobIds;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @JsonProperty("id")
     public String getIdString() {
         return id != null ? id.toHexString() : null;

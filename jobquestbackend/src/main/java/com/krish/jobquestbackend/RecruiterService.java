@@ -1,6 +1,7 @@
 package com.krish.jobquestbackend;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,9 @@ public class RecruiterService {
     @Autowired
     private RecruiterRepository recruiterRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public List<Recruiter> allRecruiters() {
         return recruiterRepository.findAll();
     }
@@ -20,6 +24,8 @@ public class RecruiterService {
     }
 
     public Recruiter createRecruiter(Recruiter recruiter) {
+        String hashedPassword = passwordEncoder.encode(recruiter.getPassword());
+        recruiter.setPassword(hashedPassword);
         return recruiterRepository.insert(recruiter);
     }
 }
