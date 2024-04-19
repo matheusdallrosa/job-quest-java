@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login as storeLogin } from "../../store/authSlice";
 import api from "../../api/axiosConfig";
 
-const LoginForm = () => {
+const LoginForm = ({ userType }) => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -27,16 +27,26 @@ const LoginForm = () => {
     e.preventDefault();
     setError("");
 
+    const isRecruiter = userType === "recruiter";
     const loginObject = { email, password };
 
     setIsLoading(true);
 
     try {
-      const response = await api.post("/api/v1/recruiters/login", loginObject);
+      const apiEndpoint = isRecruiter
+        ? "/api/v1/recruiters/login"
+        : "/api/v1/candidates/login";
+
+      const response = await api.post(apiEndpoint, loginObject);
 
       if (response.status === 200) {
         dispatch(
-          storeLogin({ isRecruiter: true, userData: response.data.recruiter })
+          storeLogin({
+            isRecruiter,
+            userData: isRecruiter
+              ? response.data.recruiter
+              : response.data.candidate,
+          })
         );
         navigate("/");
         setIsLoading(false);
@@ -100,7 +110,9 @@ const LoginForm = () => {
 
       <p className="text-secondary text-center">
         <Link
-          to="/register"
+          to={`/register/${
+            userType === "recruiter" ? "recruiter" : "candidate"
+          }`}
           className="text-white/80 hover:text-purple-500 text-lg font-semibold"
         >
           Are you new here? Create a New Account

@@ -26,7 +26,7 @@ const router = createBrowserRouter([
         element: <JobListings />,
       },
       {
-        path: "/login",
+        path: "/login/:type",
         element: <Login />,
       },
       {

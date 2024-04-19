@@ -158,7 +158,7 @@ const RecruiterRegisterForm = () => {
 
       <p className="text-secondary text-center">
         <Link
-          to="/register"
+          to="/login/recruiter"
           className="text-white/80 hover:text-purple-500 text-lg font-semibold"
         >
           Already Registered? Login here
