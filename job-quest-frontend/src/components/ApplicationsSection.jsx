@@ -5,7 +5,7 @@ import api from "../api/axiosConfig";
 
 const ApplicationsSection = () => {
   const isRecruiter = useSelector((state) => state.auth.isRecruiter);
-  const userEmail = useSelector((state) => state.auth.userData?.email);
+  const userData = useSelector((state) => state.auth.userData);
 
   const [applications, setApplications] = useState([]);
 
@@ -17,9 +17,27 @@ const ApplicationsSection = () => {
       const applicationsData = applicationsResponse.data;
       const jobsData = jobsResponse.data;
 
-      if (!isRecruiter) {
+      if (isRecruiter) {
+        const recruiterApplications = applicationsData.filter((application) =>
+          userData?.jobIds.includes(application.jobId)
+        );
+
+        const formattedApplications = recruiterApplications.map(
+          (application) => {
+            const jobInfo = jobsData.find(
+              (job) => job.id === application.jobId
+            );
+            return {
+              ...application,
+              position: jobInfo?.position || null,
+            };
+          }
+        );
+
+        setApplications(formattedApplications);
+      } else {
         const candidateApplications = applicationsData.filter(
-          (item) => item.email === userEmail
+          (item) => item.email === userData?.email
         );
 
         const formattedApplications = candidateApplications.map(
@@ -41,49 +59,7 @@ const ApplicationsSection = () => {
     };
 
     fetchApplications();
-  }, [isRecruiter, userEmail]);
-
-  const recruiterApplications = [
-    {
-      id: 1,
-      position: "SWE - II",
-      name: "Prakash S.",
-      qualification: "M.Sc.",
-      skills: ["Python", "Quantum Computing", "React"],
-      email: "prakash@gmail.com",
-      phone: "+91 74834 93742",
-      resumeLink:
-        "https://drive.google.com/file/d/1xEj5mHcEib2wTuwx2pE5tc32TJy-zPLF/view?usp=drive_link",
-    },
-    {
-      id: 2,
-      position: "Graphic Designer",
-      name: "Aman Sharma",
-      qualification: "B.Com.",
-      skills: ["Photoshop", "Illustrator", "Adobe XD"],
-      email: "aman.sharma@gmail.com",
-      phone: "+91 99328 19274",
-      resumeLink:
-        "https://drive.google.com/file/d/1xEj5mHcEib2wTuwx2pE5tc32TJy-zPLF/view?usp=drive_link",
-    },
-  ];
-
-  // const applications = [
-  //   {
-  //     id: 1,
-  //     position: "SWE - II",
-  //     company: "Google",
-  //     location: "Bengaluru, IN",
-  //     status: "Pending",
-  //   },
-  //   {
-  //     id: 2,
-  //     position: "Tech Lead",
-  //     company: "Zomato",
-  //     location: "Pune, IN",
-  //     status: "Interview Scheduled",
-  //   },
-  // ];
+  }, [isRecruiter, userData]);
 
   if (isRecruiter) {
     return (
@@ -91,7 +67,7 @@ const ApplicationsSection = () => {
         <h1 className="text-white text-2xl font-bold">Applications</h1>
 
         <div className="my-8 flex flex-col gap-6 text-white">
-          {recruiterApplications.map((item) => (
+          {applications.map((item) => (
             <div
               key={item.id}
               className="flex justify-between divide-x-2 border rounded-lg"
