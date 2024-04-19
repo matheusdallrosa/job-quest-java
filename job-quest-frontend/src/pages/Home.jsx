@@ -1,13 +1,15 @@
+import { useSelector } from "react-redux";
+
 import HeroSection from "../components/HeroSection";
 import ButtonsSection from "../components/ButtonsSection";
 import ProfileSection from "../components/ProfileSection";
 import ApplicationsSection from "../components/ApplicationsSection";
 
 const Home = () => {
-  const isLoggedIn = true;
-  const isRecruiter = true;
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isRecruiter = useSelector((state) => state.auth.isRecruiter);
 
-  if (!isLoggedIn) {
+  if (!isAuthenticated) {
     return (
       <div className="pt-40 px-32">
         <HeroSection />

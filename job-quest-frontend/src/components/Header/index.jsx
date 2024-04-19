@@ -1,10 +1,12 @@
-import Logo from "../Logo";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+import Logo from "../Logo";
 
 const Header = () => {
   const navigate = useNavigate();
 
-  const isLoggedIn = true;
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   return (
     <header className="w-full py-4 2xl:py-6 px-10 font-fira bg-white bg-opacity-10 backdrop-blur-lg fixed z-10">
@@ -34,7 +36,7 @@ const Header = () => {
           </li>
         </ul>
 
-        {isLoggedIn ? (
+        {isAuthenticated ? (
           <div className="flex justify-around items-center gap-x-6 2xl:gap-x-8">
             <button className="py-3 px-8 bg-orange-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity">
               Logout
