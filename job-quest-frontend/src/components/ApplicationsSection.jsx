@@ -74,13 +74,13 @@ const ApplicationsSection = () => {
             >
               <div className="p-6 w-4/5">
                 <div className="mb-6">
-                  <p className="font-semibold">{item.name}</p>
-                  <p>
-                    {item.position}
-                    <span className="ml-4 text-sm opacity-80">
+                  <p className="font-semibold">
+                    {item.name}{" "}
+                    <span className="ml-10 text-sm opacity-80">
                       {item.qualification}
                     </span>
                   </p>
+                  <p>{item.position}</p>
                 </div>
                 <div>
                   <p className="opacity-80">{item.email}</p>

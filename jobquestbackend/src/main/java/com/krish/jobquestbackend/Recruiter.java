@@ -59,4 +59,8 @@ public class Recruiter {
             return null;
         }
     }
+
+    public void addJobId(ObjectId jobId) {
+        this.jobIds.add(jobId);
+    }
 }

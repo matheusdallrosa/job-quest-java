@@ -1,5 +1,6 @@
 package com.krish.jobquestbackend;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,5 +28,13 @@ public class RecruiterService {
         String hashedPassword = passwordEncoder.encode(recruiter.getPassword());
         recruiter.setPassword(hashedPassword);
         return recruiterRepository.insert(recruiter);
+    }
+
+    public Recruiter addJobToRecruiter(String email, String jobId) {
+        ObjectId objectId = new ObjectId(jobId);
+        Recruiter recruiter = recruiterRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Recruiter not found"));
+
+        recruiter.addJobId(objectId);
+        return recruiterRepository.save(recruiter);
     }
 }

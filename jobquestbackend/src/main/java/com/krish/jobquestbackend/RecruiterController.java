@@ -42,6 +42,15 @@ public class RecruiterController {
         return new ResponseEntity<Optional<Recruiter>>(recruiterService.singleRecruiter(email), HttpStatus.OK);
     }
 
+    @PostMapping("/{email}/appendjob")
+    public ResponseEntity<?> appendJob(@PathVariable String email, @RequestBody String jobId) {
+        try {
+            return new ResponseEntity<Recruiter>(recruiterService.addJobToRecruiter(email, jobId), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<String>("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody Recruiter recruiter) {
         Optional<Recruiter> existingRecruiter = recruiterService.singleRecruiter(recruiter.getEmail());
