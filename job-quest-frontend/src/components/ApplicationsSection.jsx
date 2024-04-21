@@ -9,6 +9,9 @@ const ApplicationsSection = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [applications, setApplications] = useState([]);
+  const [pendingApplications, setPendingApplications] = useState([]);
+  const [acceptedApplications, setAcceptedApplications] = useState([]);
+  const [rejectedApplications, setRejectedApplications] = useState([]);
 
   useEffect(() => {
     const fetchApplications = async () => {
@@ -38,6 +41,16 @@ const ApplicationsSection = () => {
         );
 
         setApplications(formattedApplications);
+
+        setPendingApplications(
+          formattedApplications.filter((item) => item.status === "Pending")
+        );
+        setAcceptedApplications(
+          formattedApplications.filter((item) => item.status === "Accepted")
+        );
+        setRejectedApplications(
+          formattedApplications.filter((item) => item.status === "Rejected")
+        );
       } else {
         const candidateApplications = applicationsData.filter(
           (item) => item.email === userData?.email
@@ -66,10 +79,95 @@ const ApplicationsSection = () => {
     fetchApplications();
   }, [isRecruiter, userData]);
 
-  if (isRecruiter) {
+  const renderCandidateApplicationDetailsLeftSide = (item) => {
     return (
-      <div className="my-10">
-        <h1 className="text-white text-2xl font-bold">Pending Applications</h1>
+      <div className="p-6 w-4/5">
+        <div className="mb-6">
+          <p className="font-semibold">
+            {item.name}{" "}
+            <span className="ml-10 text-sm opacity-80">
+              {item.qualification}
+            </span>
+          </p>
+          <p>{item.position}</p>
+        </div>
+        <div>
+          <p className="opacity-80">{item.email}</p>
+          <p className="opacity-80">{item.phone}</p>
+
+          <p className="my-4">
+            {item.skills.map((skill, idx) => (
+              <span
+                key={idx}
+                className="mr-2 py-1 px-2 bg-slate-700 text-xs border rounded-md"
+              >
+                {skill}
+              </span>
+            ))}
+          </p>
+
+          <a href={item.resumeLink} target="_blank" className="underline">
+            Resume
+          </a>
+        </div>
+      </div>
+    );
+  };
+
+  const renderPendingApplications = () => {
+    return (
+      <div>
+        <h2 className="text-white text-2xl font-bold">Pending Applications</h2>
+
+        <div className="my-8 flex flex-col gap-6 text-white">
+          {isLoading ? (
+            <div>
+              <p className="my-10 text-lg font-semibold">Loading...</p>
+            </div>
+          ) : pendingApplications.length > 0 ? (
+            pendingApplications.map((item) => (
+              <div
+                key={item.id}
+                className="flex justify-between divide-x-2 border rounded-lg"
+              >
+                {renderCandidateApplicationDetailsLeftSide(item)}
+
+                <div className="px-6 w-1/5 flex flex-col flex-grow justify-evenly items-center text-white">
+                  <button
+                    onClick={() =>
+                      setAcceptedApplications(acceptedApplications.concat(item))
+                    }
+                    className="py-6 px-8 bg-green-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity"
+                  >
+                    Accept
+                  </button>
+                  <button
+                    onClick={() =>
+                      setRejectedApplications(rejectedApplications.concat(item))
+                    }
+                    className="py-6 px-8 bg-red-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity"
+                  >
+                    Reject
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div>
+              <p className="my-10 text-lg font-semibold">
+                No pending applications
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  const renderAcceptedApplications = () => {
+    return (
+      <div className="mt-16">
+        <h2 className="text-white text-2xl font-bold">Accepted Applications</h2>
 
         <div className="my-8 flex flex-col gap-6 text-white">
           {isLoading ? (
@@ -77,67 +175,67 @@ const ApplicationsSection = () => {
               <p className="my-10 text-lg font-semibold">Loading...</p>
             </div>
           ) : (
-            applications.map(
-              (item) =>
-                item.status === "Pending" && (
-                  <div
-                    key={item.id}
-                    className="flex justify-between divide-x-2 border rounded-lg"
-                  >
-                    <div className="p-6 w-4/5">
-                      <div className="mb-6">
-                        <p className="font-semibold">
-                          {item.name}{" "}
-                          <span className="ml-10 text-sm opacity-80">
-                            {item.qualification}
-                          </span>
-                        </p>
-                        <p>{item.position}</p>
-                      </div>
-                      <div>
-                        <p className="opacity-80">{item.email}</p>
-                        <p className="opacity-80">{item.phone}</p>
+            acceptedApplications.map((item) => (
+              <div
+                key={item.id}
+                className="flex justify-between divide-x-2 border border-green-500 rounded-lg"
+              >
+                {renderCandidateApplicationDetailsLeftSide(item)}
 
-                        <p className="my-4">
-                          {item.skills.map((skill, idx) => (
-                            <span
-                              key={idx}
-                              className="mr-2 py-1 px-2 bg-slate-700 text-xs border rounded-md"
-                            >
-                              {skill}
-                            </span>
-                          ))}
-                        </p>
-
-                        <a
-                          href={item.resumeLink}
-                          target="_blank"
-                          className="underline"
-                        >
-                          Resume
-                        </a>
-                      </div>
-                    </div>
-                    <div className="px-6 w-1/5 flex flex-col flex-grow justify-evenly items-center text-white">
-                      <button className="py-6 px-8 bg-green-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity">
-                        Accept
-                      </button>
-                      <button className="py-6 px-8 bg-red-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity">
-                        Reject
-                      </button>
-                    </div>
-                  </div>
-                )
-            )
+                <div className="px-6 w-1/5 flex flex-col flex-grow justify-evenly items-center text-white">
+                  <p className="text-green-500 font-bold text-lg">Accepted</p>
+                </div>
+              </div>
+            ))
           )}
         </div>
+      </div>
+    );
+  };
+
+  const renderRejectedApplications = () => {
+    return (
+      <div className="mt-16">
+        <h2 className="text-white text-2xl font-bold">Rejected Applications</h2>
+
+        <div className="my-8 flex flex-col gap-6 text-white">
+          {isLoading ? (
+            <div>
+              <p className="my-10 text-lg font-semibold">Loading...</p>
+            </div>
+          ) : (
+            acceptedApplications.map((item) => (
+              <div
+                key={item.id}
+                className="flex justify-between divide-x-2 border border-red-500 rounded-lg"
+              >
+                {renderCandidateApplicationDetailsLeftSide(item)}
+
+                <div className="px-6 w-1/5 flex flex-col flex-grow justify-evenly items-center text-white">
+                  <p className="text-red-500 font-bold text-lg">Rejected</p>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  if (isRecruiter) {
+    return (
+      <div className="my-10">
+        {renderPendingApplications()}
+
+        {acceptedApplications.length > 0 && renderAcceptedApplications()}
+        {rejectedApplications.length > 0 && renderRejectedApplications()}
       </div>
     );
   }
 
   return (
     <div className="my-10">
-      <h1 className="text-white text-2xl font-bold">Your Applications</h1>
+      <h2 className="text-white text-2xl font-bold">Your Applications</h2>
 
       <div className="p-4 my-4 border rounded-lg text-white">
         <div className="flex flex-col gap-2 divide-y divide-white/40">
