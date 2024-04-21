@@ -8,6 +8,8 @@ const ApplicationsSection = () => {
   const userData = useSelector((state) => state.auth.userData);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [actionLoading, setActionLoading] = useState(false);
+
   const [applications, setApplications] = useState([]);
   const [pendingApplications, setPendingApplications] = useState([]);
   const [acceptedApplications, setAcceptedApplications] = useState([]);
@@ -79,6 +81,56 @@ const ApplicationsSection = () => {
     fetchApplications();
   }, [isRecruiter, userData]);
 
+  const acceptApplication = async (item) => {
+    setActionLoading(true);
+
+    try {
+      const response = await api.post(
+        `/api/v1/applications/${item.id}`,
+        "Accepted"
+      );
+
+      if (response.status === 200) {
+        setPendingApplications(
+          pendingApplications.filter(
+            (application) => application.id !== item.id
+          )
+        );
+
+        setAcceptedApplications(acceptedApplications.concat(item));
+        setActionLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setActionLoading(false);
+    }
+  };
+
+  const rejectApplication = async (item) => {
+    setActionLoading(true);
+
+    try {
+      const response = await api.post(
+        `/api/v1/applications/${item.id}`,
+        "Rejected"
+      );
+
+      if (response.status === 200) {
+        setPendingApplications(
+          pendingApplications.filter(
+            (application) => application.id !== item.id
+          )
+        );
+
+        setRejectedApplications(rejectedApplications.concat(item));
+        setActionLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setActionLoading(false);
+    }
+  };
+
   const renderCandidateApplicationDetailsLeftSide = (item) => {
     return (
       <div className="p-6 w-4/5">
@@ -134,18 +186,20 @@ const ApplicationsSection = () => {
 
                 <div className="px-6 w-1/5 flex flex-col flex-grow justify-evenly items-center text-white">
                   <button
-                    onClick={() =>
-                      setAcceptedApplications(acceptedApplications.concat(item))
-                    }
-                    className="py-6 px-8 bg-green-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity"
+                    onClick={() => acceptApplication(item)}
+                    disabled={actionLoading}
+                    className={`py-6 px-8 bg-green-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity ${
+                      actionLoading && "opacity-30 hover:opacity-40"
+                    }`}
                   >
                     Accept
                   </button>
                   <button
-                    onClick={() =>
-                      setRejectedApplications(rejectedApplications.concat(item))
-                    }
-                    className="py-6 px-8 bg-red-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity"
+                    onClick={() => rejectApplication(item)}
+                    disabled={actionLoading}
+                    className={`py-6 px-8 bg-red-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity ${
+                      actionLoading && "opacity-30 hover:opacity-40"
+                    }`}
                   >
                     Reject
                   </button>
@@ -204,7 +258,7 @@ const ApplicationsSection = () => {
               <p className="my-10 text-lg font-semibold">Loading...</p>
             </div>
           ) : (
-            acceptedApplications.map((item) => (
+            rejectedApplications.map((item) => (
               <div
                 key={item.id}
                 className="flex justify-between divide-x-2 border border-red-500 rounded-lg"
