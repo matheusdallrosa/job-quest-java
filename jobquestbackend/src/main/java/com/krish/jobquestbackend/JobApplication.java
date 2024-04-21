@@ -38,6 +38,10 @@ public class JobApplication {
         this.jobId = jobId;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @JsonProperty("id")
     public String getIdString() {
         return id != null ? id.toHexString() : null;

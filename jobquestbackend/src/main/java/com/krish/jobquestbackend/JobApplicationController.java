@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,8 @@ import java.util.Optional;
 @RequestMapping("/api/v1/applications")
 @CrossOrigin(origins = "http://localhost:5173")
 public class JobApplicationController {
+    final List<String> VALID_STATUS_OPTIONS = Arrays.asList("Pending", "Accepted", "Rejected");
+
     @Autowired
     private JobApplicationService jobApplicationService;
 
@@ -30,5 +33,16 @@ public class JobApplicationController {
     @PostMapping
     public ResponseEntity<JobApplication> applyForJob(@RequestBody JobApplication jobApplication) {
         return new ResponseEntity<JobApplication>(jobApplicationService.createJobApplication(jobApplication), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{applicationId}")
+    public ResponseEntity<?> updateJobApplicationStatus(@PathVariable String applicationId, @RequestBody String newStatus) {
+        ObjectId applicationObjectId = new ObjectId(applicationId);
+
+        if (VALID_STATUS_OPTIONS.contains(newStatus)) {
+            return new ResponseEntity<JobApplication>(jobApplicationService.updateStatus(applicationObjectId, newStatus), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>("Invalid option", HttpStatus.BAD_REQUEST);
+        }
     }
 }
