@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Creatable from "react-select/creatable";
 
+import { addJobIdToRecruiter } from "../store/authSlice";
 import api from "../api/axiosConfig";
 import { skillOptions } from "../data/constants";
 
 const PostJobForm = () => {
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const userData = useSelector((state) => state.auth.userData);
+  const isRecruiter = useSelector((state) => state.auth.isRecruiter);
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -30,14 +33,50 @@ const PostJobForm = () => {
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/login/recruiter");
+    } else if (!isRecruiter) {
+      navigate("/");
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, isRecruiter]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
     const skillsArray = skills.map((item) => item.value);
+    const formData = {
+      position,
+      company,
+      location,
+      experience,
+      description,
+      skills: skillsArray,
+    };
+
+    setIsLoading(true);
+
+    try {
+      const jobResponse = await api.post("/api/v1/jobs", formData);
+
+      if (jobResponse.status === 201) {
+        const appendResponse = await api.post(
+          `/api/v1/recruiters/${userData?.email}/appendjob`,
+          jobResponse.data.id
+        );
+
+        if (appendResponse.status === 200) {
+          dispatch(addJobIdToRecruiter({ jobId: jobResponse.data.id }));
+
+          setIsLoading(false);
+          navigate("/jobs");
+        }
+
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setError("Something went wrong!");
+      setIsLoading(false);
+    }
 
     console.log(skillsArray);
   };
