@@ -43,12 +43,12 @@ const Header = () => {
       <nav className="flex justify-between items-center">
         <div>
           <Link to="/">
-            <Logo className="text-lg 2xl:text-2xl" />
+            <Logo className="text-xl 2xl:text-2xl" />
           </Link>
         </div>
 
         {isAuthenticated && (
-          <ul className="flex gap-x-4 text-white/80 font-semibold text-lg 2xl:text-2xl">
+          <ul className="flex gap-x-4 text-white/80 font-semibold text-base 2xl:text-xl">
             <li>
               <button
                 onClick={() => navigate("/")}
@@ -73,7 +73,7 @@ const Header = () => {
             <button
               onClick={handleLogout}
               disabled={isLoading}
-              className={`py-3 px-8 bg-orange-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity ${
+              className={`py-3 px-8 bg-orange-600 hover:opacity-70 rounded-lg text-white text-base font-semibold transition-opacity ${
                 isLoading && "opacity-30 hover:opacity-40"
               }`}
             >
@@ -81,12 +81,21 @@ const Header = () => {
             </button>
           </div>
         ) : (
-          <button
-            onClick={() => navigate("/register/candidate")}
-            className="py-3 px-8 bg-green-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity"
-          >
-            Register
-          </button>
+          <div className="flex justify-between gap-4">
+            <button
+              onClick={() => navigate("/login/recruiter")}
+              className="py-2 px-6 bg-purple-600 hover:opacity-70 rounded-lg text-white text-base font-semibold transition-opacity"
+            >
+              Recruiter Login
+            </button>
+
+            <button
+              onClick={() => navigate("/login/candidate")}
+              className="py-2 px-6 bg-green-600 hover:opacity-70 rounded-lg text-white text-base font-semibold transition-opacity"
+            >
+              Candidate Login
+            </button>
+          </div>
         )}
       </nav>
     </header>

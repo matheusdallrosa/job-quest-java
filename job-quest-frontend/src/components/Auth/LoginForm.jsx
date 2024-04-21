@@ -67,10 +67,12 @@ const LoginForm = ({ userType }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="p-14 mb-24 bg-slate-700 w-full max-w-md 2xl:max-w-xl rounded-lg flex flex-col gap-4 2xl:gap-10 mx-auto"
+      className={`p-14 mb-24 w-full max-w-md 2xl:max-w-xl rounded-lg flex flex-col gap-4 2xl:gap-10 mx-auto ${
+        userType === "recruiter" ? "bg-slate-700" : "bg-slate-800"
+      }`}
     >
       <h1 className="text-3xl 2xl:text-5xl font-bold text-white text-center mb-8 2xl:mb-12">
-        Login
+        {userType === "recruiter" ? "Recruiter Login" : "Candidate Login"}
       </h1>
 
       <div>
