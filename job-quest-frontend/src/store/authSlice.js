@@ -20,9 +20,14 @@ const authSlice = createSlice({
       state.isRecruiter = null;
       state.userData = null;
     },
+    addJobIdToRecruiter: (state, action) => {
+      if (state.isRecruiter) {
+        state.userData?.jobIds?.push(action.payload.jobId);
+      }
+    },
   },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { login, logout, addJobIdToRecruiter } = authSlice.actions;
 
 export default authSlice.reducer;
