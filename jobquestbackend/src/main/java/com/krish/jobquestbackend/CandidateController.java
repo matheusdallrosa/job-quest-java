@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/candidates")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "https://job-quest-client.vercel.app")
 public class CandidateController {
     @Autowired
     private CandidateService candidateService;
