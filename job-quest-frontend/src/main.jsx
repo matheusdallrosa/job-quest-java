@@ -11,6 +11,7 @@ import Home from "./pages/Home.jsx";
 import JobListings from "./pages/JobListings.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
+import PostJob from "./pages/PostJob.jsx";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: "/register/:type",
         element: <Register />,
+      },
+      {
+        path: "/postjob",
+        element: <PostJob />,
       },
     ],
   },

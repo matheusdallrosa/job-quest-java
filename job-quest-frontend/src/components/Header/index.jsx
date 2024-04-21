@@ -47,24 +47,26 @@ const Header = () => {
           </Link>
         </div>
 
-        <ul className="flex gap-x-4 text-white/80 font-semibold text-lg 2xl:text-2xl">
-          <li>
-            <button
-              onClick={() => navigate("/")}
-              className="inline-block px-4 py-2 duration-200 hover:bg-slate-900 hover:text-purple-400 rounded-2xl"
-            >
-              Home
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={() => navigate("/jobs")}
-              className="inline-block px-4 py-2 duration-200 hover:bg-slate-900 hover:text-purple-400 rounded-2xl"
-            >
-              Job Listings
-            </button>
-          </li>
-        </ul>
+        {isAuthenticated && (
+          <ul className="flex gap-x-4 text-white/80 font-semibold text-lg 2xl:text-2xl">
+            <li>
+              <button
+                onClick={() => navigate("/")}
+                className="inline-block px-4 py-2 duration-200 hover:bg-slate-900 hover:text-purple-400 rounded-2xl"
+              >
+                Home
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => navigate("/jobs")}
+                className="inline-block px-4 py-2 duration-200 hover:bg-slate-900 hover:text-purple-400 rounded-2xl"
+              >
+                Job Listings
+              </button>
+            </li>
+          </ul>
+        )}
 
         {isAuthenticated ? (
           <div className="flex justify-around items-center gap-x-6 2xl:gap-x-8">

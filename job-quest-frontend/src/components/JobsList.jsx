@@ -1,4 +1,19 @@
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 const JobsList = ({ jobs, onApply, setSelectedJob }) => {
+  const navigate = useNavigate();
+
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isRecruiter = useSelector((state) => state.auth.isRecruiter);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
+
   const handleApplyClick = (job) => {
     setSelectedJob(job);
     onApply();
@@ -7,6 +22,17 @@ const JobsList = ({ jobs, onApply, setSelectedJob }) => {
   return (
     <div className="text-white">
       <h1 className="text-2xl font-bold">Available Jobs</h1>
+
+      {isRecruiter && (
+        <div className="my-6">
+          <button
+            onClick={() => navigate("/postjob")}
+            className="py-3 px-8 bg-green-600 hover:opacity-70 rounded-lg text-white text-lg font-bold transition-opacity"
+          >
+            + Post New Job
+          </button>
+        </div>
+      )}
 
       <div className="my-6 flex flex-col gap-6">
         {jobs.map((job) => (
@@ -38,7 +64,10 @@ const JobsList = ({ jobs, onApply, setSelectedJob }) => {
             <div>
               <button
                 onClick={() => handleApplyClick(job)}
-                className="py-4 px-8 bg-green-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity"
+                disabled={isRecruiter}
+                className={`py-4 px-8 bg-green-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity ${
+                  isRecruiter && "opacity-30 hover:opacity-40"
+                }`}
               >
                 Apply
               </button>
