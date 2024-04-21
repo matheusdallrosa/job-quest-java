@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { login as storeLogin } from "../../store/authSlice";
 import api from "../../api/axiosConfig";
-import EyeIcon from "./EyeIcon";
-import EyeCloseIcon from "./EyeCloseIcon";
+import EyeIcon from "../Icons/EyeIcon";
+import EyeCloseIcon from "../Icons/EyeCloseIcon";
 
 const LoginForm = ({ userType }) => {
   const navigate = useNavigate();

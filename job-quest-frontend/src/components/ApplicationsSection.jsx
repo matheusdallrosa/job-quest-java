@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import api from "../api/axiosConfig";
+import CheckIcon from "./Icons/CheckIcon";
+import CrossIcon from "./Icons/CrossIcon";
 
 const ApplicationsSection = () => {
   const isRecruiter = useSelector((state) => state.auth.isRecruiter);
@@ -188,20 +190,22 @@ const ApplicationsSection = () => {
                   <button
                     onClick={() => acceptApplication(item)}
                     disabled={actionLoading}
-                    className={`py-6 px-8 bg-green-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity ${
+                    className={`py-3 px-8 flex flex-col items-center justify-center bg-green-600 hover:opacity-70 rounded-lg text-white font-semibold transition-opacity ${
                       actionLoading && "opacity-30 hover:opacity-40"
                     }`}
                   >
                     Accept
+                    <CheckIcon width="1.5em" height="1.5em" />
                   </button>
                   <button
                     onClick={() => rejectApplication(item)}
                     disabled={actionLoading}
-                    className={`py-6 px-8 bg-red-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity ${
+                    className={`py-3 px-8 flex flex-col items-center justify-center bg-red-600 hover:opacity-70 rounded-lg text-white font-semibold transition-opacity ${
                       actionLoading && "opacity-30 hover:opacity-40"
                     }`}
                   >
                     Reject
+                    <CrossIcon width="1.5em" height="1.5em" />
                   </button>
                 </div>
               </div>
