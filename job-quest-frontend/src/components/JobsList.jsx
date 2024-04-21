@@ -77,7 +77,7 @@ const JobsList = ({
                 <button
                   onClick={() => handleDeleteClick(job)}
                   disabled={actionLoading}
-                  className={`py-4 px-8 bg-green-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity ${
+                  className={`py-4 px-8 bg-red-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity ${
                     actionLoading && "opacity-30 hover:opacity-40"
                   }`}
                 >
