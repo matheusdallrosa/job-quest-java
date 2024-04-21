@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { login as storeLogin } from "../../store/authSlice";
 import api from "../../api/axiosConfig";
+import EyeIcon from "./EyeIcon";
+import EyeCloseIcon from "./EyeCloseIcon";
 
 const LoginForm = ({ userType }) => {
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ const LoginForm = ({ userType }) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -86,14 +89,27 @@ const LoginForm = ({ userType }) => {
         />
       </div>
 
-      <div>
+      <div className="flex justify-between gap-1 items-center">
         <input
-          type="password"
+          type={showPassword ? "text" : "password"}
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full py-2 px-4 text-lg rounded-lg text-black/80"
           required={true}
+        />
+
+        <EyeIcon
+          height="1.7em"
+          width="1.7em"
+          className={`cursor-pointer ${showPassword && "hidden"}`}
+          onClick={() => setShowPassword(true)}
+        />
+        <EyeCloseIcon
+          height="1.7em"
+          width="1.7em"
+          className={`cursor-pointer ${!showPassword && "hidden"}`}
+          onClick={() => setShowPassword(false)}
         />
       </div>
 
