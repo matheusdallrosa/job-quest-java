@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 import api from "../api/axiosConfig";
 import JobsList from "../components/JobsList";
@@ -6,7 +7,10 @@ import JobApplication from "../components/modals/JobApplication";
 import Confirmation from "../components/modals/Confirmation";
 
 const JobListings = () => {
+  const userData = useSelector((state) => state.auth.userData);
+
   const [isLoading, setIsLoading] = useState(false);
+  const [actionLoading, setActionLoading] = useState(false);
 
   const [isJobApplicationModalOpen, setIsJobApplicationModalOpen] =
     useState(false);
@@ -69,6 +73,42 @@ const JobListings = () => {
     }
   };
 
+  const deleteJob = async (job) => {
+    setActionLoading(true);
+
+    try {
+      const deleteResponse = await api.delete(`/api/v1/jobs/${job.id}`);
+
+      if (deleteResponse.status === 204) {
+        const removeResponse = await api.post(
+          `/api/v1/recruiters/${userData.email}/removejob`,
+          job.id
+        );
+
+        if (removeResponse.status === 200) {
+          setJobs(jobs.filter((item) => item.id !== job.id));
+
+          setConfirmationMessage(
+            `Successfully deleted the job: ${job?.position} at ${job?.company}`
+          );
+
+          openConfirmationModal();
+        }
+
+        setActionLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setActionLoading(false);
+
+      setConfirmationMessage(
+        "Some error occurred while deleting the job. Kindly try again!"
+      );
+
+      openConfirmationModal();
+    }
+  };
+
   return (
     <div className="pt-40 px-32">
       {isLoading ? (
@@ -77,8 +117,10 @@ const JobListings = () => {
         </div>
       ) : jobs.length > 0 ? (
         <JobsList
+          actionLoading={actionLoading}
           jobs={jobs}
           onApply={openApplicationModal}
+          onDelete={deleteJob}
           setSelectedJob={setSelectedJob}
         />
       ) : (

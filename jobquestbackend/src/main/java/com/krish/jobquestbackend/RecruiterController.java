@@ -51,6 +51,11 @@ public class RecruiterController {
         }
     }
 
+    @PostMapping("/{email}/removejob")
+    public ResponseEntity<Recruiter> removeJob(@PathVariable String email, @RequestBody String jobId) {
+        return new ResponseEntity<Recruiter>(recruiterService.removeJobFromRecruiter(email, jobId), HttpStatus.OK);
+    }
+
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody Recruiter recruiter) {
         Optional<Recruiter> existingRecruiter = recruiterService.singleRecruiter(recruiter.getEmail());

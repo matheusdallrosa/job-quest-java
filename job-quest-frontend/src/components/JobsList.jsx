@@ -2,11 +2,18 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const JobsList = ({ jobs, onApply, setSelectedJob }) => {
+const JobsList = ({
+  actionLoading,
+  jobs,
+  onApply,
+  onDelete,
+  setSelectedJob,
+}) => {
   const navigate = useNavigate();
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const isRecruiter = useSelector((state) => state.auth.isRecruiter);
+  const userData = useSelector((state) => state.auth.userData);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -17,6 +24,10 @@ const JobsList = ({ jobs, onApply, setSelectedJob }) => {
   const handleApplyClick = (job) => {
     setSelectedJob(job);
     onApply();
+  };
+
+  const handleDeleteClick = (job) => {
+    onDelete(job);
   };
 
   return (
@@ -61,17 +72,31 @@ const JobsList = ({ jobs, onApply, setSelectedJob }) => {
               ))}
             </div>
 
-            <div>
-              <button
-                onClick={() => handleApplyClick(job)}
-                disabled={isRecruiter}
-                className={`py-4 px-8 bg-green-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity ${
-                  isRecruiter && "opacity-30 hover:opacity-40"
-                }`}
-              >
-                Apply
-              </button>
-            </div>
+            {isRecruiter && userData.jobIds.includes(job.id) ? (
+              <div>
+                <button
+                  onClick={() => handleDeleteClick(job)}
+                  disabled={actionLoading}
+                  className={`py-4 px-8 bg-green-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity ${
+                    actionLoading && "opacity-30 hover:opacity-40"
+                  }`}
+                >
+                  Delete
+                </button>
+              </div>
+            ) : (
+              <div>
+                <button
+                  onClick={() => handleApplyClick(job)}
+                  disabled={isRecruiter}
+                  className={`py-4 px-8 bg-green-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold transition-opacity ${
+                    isRecruiter && "opacity-30 hover:opacity-40"
+                  }`}
+                >
+                  Apply
+                </button>
+              </div>
+            )}
           </div>
         ))}
       </div>

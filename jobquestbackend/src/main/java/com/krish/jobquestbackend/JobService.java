@@ -23,4 +23,10 @@ public class JobService {
     public Job createJob(Job job) {
         return jobRepository.insert(job);
     }
+
+    public Job deleteJob(ObjectId id) {
+        Job job = jobRepository.findById(id).orElseThrow(() -> new RuntimeException("Job not found"));
+        jobRepository.delete(job);
+        return job;
+    }
 }

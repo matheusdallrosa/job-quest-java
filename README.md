@@ -17,7 +17,13 @@ You can check out the live demo of JobQuest [here](https://job-quest-client.verc
 ### Screenshots
 
 ![](ReadmeImgs/screen-1.png)
+
+---
+
 ![](ReadmeImgs/screen-2.png)
+
+---
+
 ![](ReadmeImgs/screen-3.png)
 
 ## Features

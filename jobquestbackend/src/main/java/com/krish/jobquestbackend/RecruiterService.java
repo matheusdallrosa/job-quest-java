@@ -37,4 +37,12 @@ public class RecruiterService {
         recruiter.addJobId(objectId);
         return recruiterRepository.save(recruiter);
     }
+
+    public Recruiter removeJobFromRecruiter(String email, String jobId) {
+        ObjectId objectId = new ObjectId(jobId);
+        Recruiter recruiter = recruiterRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Recruiter not found"));
+
+        recruiter.removeJobId(objectId);
+        return recruiterRepository.save(recruiter);
+    }
 }

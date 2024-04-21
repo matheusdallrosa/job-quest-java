@@ -30,4 +30,10 @@ public class JobController {
     public ResponseEntity<Job> createJob(@RequestBody Job job) {
         return new ResponseEntity<Job>(jobService.createJob(job), HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Job> deleteJob(@PathVariable String id) {
+        ObjectId jobId = new ObjectId(id);
+        return new ResponseEntity<Job>(jobService.deleteJob(jobId), HttpStatus.NO_CONTENT);
+    }
 }
