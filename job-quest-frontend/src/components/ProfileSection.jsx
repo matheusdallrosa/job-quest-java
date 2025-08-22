@@ -26,6 +26,8 @@ const ProfileSection = () => {
     </div>
   );
 
+  console.log(userData);
+  console.log(isRecruiter)
   if (!userData) return null;
 
   return (

@@ -1,0 +1,63 @@
+version: '3.8'
+
+# Used for local development.
+# Docker Compose file for the back-end. Starts a mongodb server and the JobQuest API.
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: jobdb
+      MONGO_INITDB_ROOT_PASSWORD: jobdb
+      MONGO_INITDB_DATABASE: jobquest
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - job-quest-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+  maven-build:
+    image: amazoncorretto:17
+    container_name: maven-build
+    volumes:
+      - ./jobquestbackend:/app
+      - ${HOME}/.m2:/root/.m2
+    working_dir: /app
+    command: ./mvnw clean package -DskipTests
+    networks:
+      - job-quest-network
+
+  job-quest:
+    build:
+      context: jobquestbackend
+      dockerfile: Dockerfile
+    container_name: jobquestbackend
+    ports:
+      - "8080:8080"
+    environment:
+      MONGO_USER: jobdb
+      MONGO_PASSWORD: jobdb
+      MONGO_DATABASE: jobquest
+      MONGO_CLUSTER: mongodb
+      JWT_SECRET_KEY: 8f1c275c58eb208d27a26a96d4a659f71a8f1cb9875abb5ee02d94e2ced98f91
+    depends_on:
+      maven-build:
+        condition: service_completed_successfully
+      mongodb:
+        condition: service_healthy
+    networks:
+      - job-quest-network
+
+volumes:
+  mongo-data:
+
+networks:
+  job-quest-network:
+    driver: bridge

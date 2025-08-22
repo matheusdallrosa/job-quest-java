@@ -52,7 +52,7 @@ const Header = () => {
             <li>
               <button
                 onClick={() => navigate("/")}
-                className="inline-block px-4 py-2 duration-200 hover:bg-slate-900 hover:text-purple-400 rounded-2xl"
+                className="inline-block px-4 py-2 duration-200 hover:bg-slate-900 hover:text-blue-400 rounded-2xl"
               >
                 Home
               </button>
@@ -60,7 +60,7 @@ const Header = () => {
             <li>
               <button
                 onClick={() => navigate("/jobs")}
-                className="inline-block px-4 py-2 duration-200 hover:bg-slate-900 hover:text-purple-400 rounded-2xl"
+                className="inline-block px-4 py-2 duration-200 hover:bg-slate-900 hover:text-blue-400 rounded-2xl"
               >
                 Job Listings
               </button>
@@ -84,7 +84,7 @@ const Header = () => {
           <div className="flex justify-between gap-4">
             <button
               onClick={() => navigate("/login/recruiter")}
-              className="py-2 px-6 bg-purple-600 hover:opacity-70 rounded-lg text-white text-base font-semibold transition-opacity"
+              className="py-2 px-6 bg-blue-600 hover:opacity-70 rounded-lg text-white text-base font-semibold transition-opacity"
             >
               Recruiter Login
             </button>

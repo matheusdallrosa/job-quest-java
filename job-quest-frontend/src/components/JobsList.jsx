@@ -30,19 +30,42 @@ const JobsList = ({
     onDelete(job);
   };
 
+  if(jobs.length == 0){
+    return (
+        <>
+          {isRecruiter && (
+              <div className="my-6">
+                <button
+                    onClick={() => navigate("/postjob")}
+                    className="py-3 px-8 bg-green-600 hover:opacity-70 rounded-lg text-white text-lg font-bold transition-opacity"
+                >
+                  + Post New Job
+                </button>
+              </div>
+          )}
+
+          <div>
+            <p className="text-white text-lg font-bold">
+              No available jobs to show! Kindly check later
+            </p>
+          </div>
+        </>
+    );
+  }
+
   return (
     <div className="text-white">
       <h1 className="text-2xl font-bold">Available Jobs</h1>
 
       {isRecruiter && (
-        <div className="my-6">
-          <button
-            onClick={() => navigate("/postjob")}
-            className="py-3 px-8 bg-green-600 hover:opacity-70 rounded-lg text-white text-lg font-bold transition-opacity"
-          >
-            + Post New Job
-          </button>
-        </div>
+          <div className="my-6">
+            <button
+                onClick={() => navigate("/postjob")}
+                className="py-3 px-8 bg-green-600 hover:opacity-70 rounded-lg text-white text-lg font-bold transition-opacity"
+            >
+              + Post New Job
+            </button>
+          </div>
       )}
 
       <div className="my-6 flex flex-col gap-6">

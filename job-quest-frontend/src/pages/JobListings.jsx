@@ -115,7 +115,7 @@ const JobListings = () => {
         <div>
           <p className="text-white text-lg font-bold">Loading...</p>
         </div>
-      ) : jobs.length > 0 ? (
+      ) : (
         <JobsList
           actionLoading={actionLoading}
           jobs={jobs}
@@ -123,12 +123,6 @@ const JobListings = () => {
           onDelete={deleteJob}
           setSelectedJob={setSelectedJob}
         />
-      ) : (
-        <div>
-          <p className="text-white text-lg font-bold">
-            No available jobs to show! Kindly check later
-          </p>
-        </div>
       )}
 
       <JobApplication

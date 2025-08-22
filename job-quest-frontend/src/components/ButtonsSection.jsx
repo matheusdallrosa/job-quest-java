@@ -7,7 +7,7 @@ const ButtonsSection = () => {
     <div className="mt-16 flex justify-evenly">
       <button
         onClick={() => navigate("/register/recruiter")}
-        className="py-4 px-10 bg-purple-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold shadow-inner shadow-black/80 transition-opacity"
+        className="py-4 px-10 bg-blue-600 hover:opacity-70 rounded-lg text-white text-lg font-semibold shadow-inner shadow-black/80 transition-opacity"
       >
         Hiring
       </button>
