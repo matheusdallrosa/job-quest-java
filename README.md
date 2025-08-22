@@ -55,51 +55,67 @@ You can check out the live demo of JobQuest [here](https://job-quest-client.verc
 
 These instructions will help you set up a copy of the project on your local machine.
 
-### Prerequisites
-
-Before getting started, make sure you have the following installed on your machine:
-
-- [Node.js version 18.15.0 (or higher)](https://nodejs.org)
-- [JDK (Java Development Kit) 17](https://www.oracle.com/in/java/technologies/downloads/#java17)
-- [Maven](https://maven.apache.org/download.cgi)
-
 ### Installing & Usage
 
-1. Clone the repository to your local machine:
+The first option to run the application locally for development is to use our docker-compose.yml configuration.
+This option is very interesting if you are going to make mostly front-end related changes, or you want to make sure
+that you are starting a test with a clean environment.
 
+Prerequisites
+- Docker
+- Node 17.5+
+- Npm 8.4.1
+
+Commands
    ```bash
-   git clone https://github.com/Krishnanand2517/job-quest-java
+   # clone the repo
+   git clone https://github.com/matheusdallrosa/job-quest-java
    cd job-quest-java
-   ```
-
-1. Navigate to the backend directory `jobquestbackend` & open the folder in any IDE configured for Spring Boot (preferably IntelliJ IDEA).
-
-1. Sync all the Maven dependencies.
-
-1. Copy the environment variables from `.env.sample` to a new file `.env`:
-
-   Obtain the values and API keys for the variables from their respective sources.
-
-1. Once you have setup the project and its dependencies, you can run the server.
-
-   This will start the backend server on port 8080, and you can access it in your web browser at http://localhost:8080/.
-
-   Check it by navigating to http://localhost:8080/api/v1/jobs !
-
-1. Navigate to the frontend directory and install project dependencies:
-
-   ```bash
+   
+   # Builds the back-end project. 
+   # Starts the back-end API inside a docker file.
+   # Starts a mongodb server to store the data.
+   Docker compose up --build
+   
+   # Goes to FE project folder
+   cd job-quest-frontend 
+   
+   # Installs dependencies
    npm install
-   ```
-
-1. Run the development server for frontend:
-
-   ```bash
+   
+   # Run dev server.
    npm run dev
    ```
 
-   This will start the frontend server on port 5173, and you can access the web app in your web browser at http://localhost:5173
+The second option is to run manually run the back-end application and the front-end application. Very useful when you are going to do
+a lot of changes on the back-end and wants to iterate quickly.
+Prerequisites
+- Docker
+- Node 17.5+
+- Npm 8.4.1
+- Java 17
 
-### Contribute
-
-If you encounter any issues, have suggestions, or want to contribute, feel free to open an issue or submit a pull request. Happy coding!
+Commands
+   ```bash
+   # clone the repo
+   git clone https://github.com/matheusdallrosa/job-quest-java
+   cd job-quest-java/jobquestbackend
+   
+   # Run mongodb inside a docker container
+   docker container run --name mongodb -e MONGO_INITDB_ROOT_USERNAME=jobdb -e MONGO_INITDB_ROOT_PASSWORD=jobdb -e MONGO_INITDB_DATABASE=jobquest -p 27017:27017 mongo
+   
+   # Build the application code
+   MONGO_USER=jobdb MONGO_PASSWORD=jobdb MONGO_CLUSTER=127.0.0.1 JWT_SECRET_KEY=8f1c275c58eb208d27a26a96d4a659f71a8f1cb9875abb5ee02d94e2ced98f91  ./mvnw clean install
+   
+   # Run local server
+   MONGO_USER=jobdb MONGO_PASSWORD=jobdb MONGO_CLUSTER=127.0.0.1 JWT_SECRET_KEY=8f1c275c58eb208d27a26a96d4a659f71a8f1cb9875abb5ee02d94e2ced98f91  ./mvnw clean spring-boot:run
+   
+   # Goes to FE project folder
+   cd ../job-quest-frontend
+   
+   # Installs dependencies
+   npm install
+   
+   # Run dev server.
+   npm run dev
+   ```
