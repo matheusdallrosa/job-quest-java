@@ -46,7 +46,6 @@ services:
       MONGO_PASSWORD: jobdb
       MONGO_DATABASE: jobquest
       MONGO_CLUSTER: mongodb
-      JWT_SECRET_KEY: 8f1c275c58eb208d27a26a96d4a659f71a8f1cb9875abb5ee02d94e2ced98f91
     depends_on:
       maven-build:
         condition: service_completed_successfully

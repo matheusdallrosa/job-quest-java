@@ -105,10 +105,10 @@ Commands
    docker container run --name mongodb -e MONGO_INITDB_ROOT_USERNAME=jobdb -e MONGO_INITDB_ROOT_PASSWORD=jobdb -e MONGO_INITDB_DATABASE=jobquest -p 27017:27017 mongo
    
    # Build the application code
-   MONGO_USER=jobdb MONGO_PASSWORD=jobdb MONGO_CLUSTER=127.0.0.1 JWT_SECRET_KEY=8f1c275c58eb208d27a26a96d4a659f71a8f1cb9875abb5ee02d94e2ced98f91  ./mvnw clean install
+   MONGO_USER=jobdb MONGO_PASSWORD=jobdb MONGO_CLUSTER=127.0.0.1 ./mvnw clean install
    
    # Run local server
-   MONGO_USER=jobdb MONGO_PASSWORD=jobdb MONGO_CLUSTER=127.0.0.1 JWT_SECRET_KEY=8f1c275c58eb208d27a26a96d4a659f71a8f1cb9875abb5ee02d94e2ced98f91  ./mvnw clean spring-boot:run
+   MONGO_USER=jobdb MONGO_PASSWORD=jobdb MONGO_CLUSTER=127.0.0.1 ./mvnw clean spring-boot:run
    
    # Goes to FE project folder
    cd ../job-quest-frontend
