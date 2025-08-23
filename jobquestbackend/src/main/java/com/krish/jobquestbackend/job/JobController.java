@@ -1,4 +1,4 @@
-package com.krish.jobquestbackend;
+package com.krish.jobquestbackend.job;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;

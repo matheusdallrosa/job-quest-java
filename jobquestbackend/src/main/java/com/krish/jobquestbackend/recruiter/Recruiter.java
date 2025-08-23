@@ -1,4 +1,4 @@
-package com.krish.jobquestbackend;
+package com.krish.jobquestbackend.recruiter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

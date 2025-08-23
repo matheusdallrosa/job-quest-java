@@ -1,4 +1,4 @@
-package com.krish.jobquestbackend;
+package com.krish.jobquestbackend.security;
 
 import java.util.List;
 import org.springframework.context.annotation.Bean;

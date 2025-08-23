@@ -1,4 +1,4 @@
-package com.krish.jobquestbackend;
+package com.krish.jobquestbackend.job;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -10,35 +10,27 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Document(collection = "candidates")
+@Document(collection = "jobs")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Candidate {
+public class Job {
     @Id
     private ObjectId id;
-    private String name;
-    private String email;
-    private String password;
+    private String position;
+    private String company;
+    private String location;
+    private String experience;
+    private String description;
     private List<String> skills;
 
-    public Candidate(String name, String email, String password, List<String> skills) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
+    public Job(String position, String company, String location, String experience, String description, List<String> skills) {
+        this.position = position;
+        this.company = company;
+        this.location = location;
+        this.experience = experience;
+        this.description = description;
         this.skills = skills;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     @JsonProperty("id")
