@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/applications")
-@CrossOrigin(origins = "https://job-quest-client.vercel.app")
 public class JobApplicationController {
     final List<String> VALID_STATUS_OPTIONS = Arrays.asList("Pending", "Accepted", "Rejected");
 

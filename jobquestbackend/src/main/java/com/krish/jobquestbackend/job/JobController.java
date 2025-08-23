@@ -11,7 +11,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/jobs")
-@CrossOrigin(origins = "https://job-quest-client.vercel.app")
 public class JobController {
     @Autowired
     private JobService jobService;
